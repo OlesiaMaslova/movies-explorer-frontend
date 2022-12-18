@@ -1,0 +1,37 @@
+.navTab {
+    display: flex;
+    max-width: 190px;
+    justify-content: space-between;
+}
+
+.navTab__link {
+    text-decoration: none;
+    display: flex;
+    color: #ffff;
+    margin-right: 30px;
+    font-size: 12px;
+    line-height: 1.33;
+    height: 32px;
+    text-align: center;
+    align-items: center;
+}
+
+.navTab__link:last-child {
+    margin-right: 0;
+}
+
+.navTab__link_login {
+    color: #000;
+    background-color:#3DDC84;
+    border-radius: 3px;
+    padding: 0 9px 0;;
+
+}
+
+@media screen and (min-width:320px) and (max-width:768px) {
+    .navTab__link {
+        margin-right: 16px;
+        font-size: 10px;
+        line-height: 1.6;
+    }
+}
