@@ -1,22 +1,22 @@
 import React from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import './MoviesCardList.css'
+import './MoviesCardList.css';
+
+
 function MoviesCardList(props) {
     return (   
         <section className="moviesCardList">
                 <ul className="moviesCardList__list">
-                   <MoviesCard />
-                   <MoviesCard />
-                   <MoviesCard />
-                   <MoviesCard isSaved={true} />
-                   <MoviesCard />
-                   <MoviesCard isSaved={true}/>
-                   <MoviesCard />
-                   <MoviesCard isSaved={true}/>
-                   <MoviesCard />
-                   <MoviesCard />
-                   <MoviesCard />
-                   <MoviesCard />
+
+                {props.cards.map((card) => {
+                        return (
+                            <MoviesCard moviesName={card.name} moviesLink={card.link} key={card.id} owner={card.owner} isOnSaved={props.isSaved}/>
+                        )
+                    })}
+                   
+                   
+                   {/* <MoviesCard movieName='33 слова о дизайне' movieLink='' />  */}
+                
                 </ul>
             </section>
     );
