@@ -13,10 +13,7 @@ function MoviesCardList(props) {
                             <MoviesCard moviesName={card.name} moviesLink={card.link} key={card.id} owner={card.owner} isOnSaved={props.isSaved}/>
                         )
                     })}
-                   
-                   
-                   {/* <MoviesCard movieName='33 слова о дизайне' movieLink='' />  */}
-                
+                                  
                 </ul>
             </section>
     );

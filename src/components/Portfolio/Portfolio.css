@@ -70,7 +70,7 @@
 }
 
 .portfolio__link {
-    margin-top: 100px;
+    margin-top: 64px;
     text-decoration: none;
     color: #FFFF;
     font-weight: 400;
@@ -81,7 +81,7 @@
     padding: 0;
     text-align: left;
     margin-top: 50px;
-    margin-bottom: 125px;
+    margin-bottom: 186px;
 }
 
 .portfolio__item {
@@ -92,6 +92,7 @@
     border-bottom:1px solid #424242;
     padding-bottom: 19px;
     position: relative;
+    margin-bottom: 22px;
 }
 
 .portfolio__item:last-child {

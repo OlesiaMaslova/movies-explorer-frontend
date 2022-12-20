@@ -4,6 +4,7 @@
     align-items:center;
     padding:18px 70px 0;
     background-color: #073042;
+    box-sizing: border-box;
 }
 
 .header {
@@ -11,6 +12,7 @@
     justify-content:space-between;
     align-items:center;
     padding:18px 70px 0;
+    box-sizing: border-box;
 
 }
 
@@ -36,7 +38,7 @@
     visibility: hidden;
     position: absolute;
     top:-10px;
-    right:-10px;
+    right:3px;
 }
 
 .header__menu-btn::before {
@@ -51,7 +53,7 @@
     left: 0;
 }
 
-@media screen and (min-width:769px) and (max-width:1280px) {
+@media screen and (min-width:769px) and (max-width:1278px) {
     .header {
         padding:18px 30px 18px;
     }
@@ -64,10 +66,10 @@
     .header__menu-btn {
         display: block;
     }
-    .headerMain {
+    .header {
         padding:18px 14px 18px;
     }
-    .header {
+    .headerMain {
         padding:18px 14px 18px;
     }
 }

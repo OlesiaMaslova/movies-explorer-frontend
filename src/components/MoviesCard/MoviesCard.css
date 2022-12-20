@@ -1,8 +1,9 @@
 .moviesCard {
     max-width: 360px;
-    max-height: 236px;
+    max-height: 260px;
     background-color: transparent;
     position: relative;
+    color: #FFFF;
 }
 
 .moviesCard__pic {
@@ -17,12 +18,14 @@
  display: flex;  
  justify-content: space-between; 
  align-items: center;
+ margin-bottom: 29px;
 }
 
 .moviesCard__title {
     font-size: 13px;
     line-height: 1.2;
     margin: 0;
+    margin-top: 11px;
     margin-left: 10px;
     font-weight: 500;
     text-overflow: ellipsis;
@@ -39,6 +42,7 @@
     width: 52px;
     height: 18px;
     margin-right: 10px;
+    margin-top: 10px;
 }
 
 .moviesCard__duration {

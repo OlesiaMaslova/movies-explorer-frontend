@@ -2,9 +2,10 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding-top:18px;
+    padding-top:3px;
     width:60%;
     position: relative;
+    box-sizing: border-box;
 }
 
 .navigation__menu {
@@ -69,11 +70,13 @@
 
 .navigation__close-btn {
     border: none;
-    position: relative;
+    position: absolute;
     width: 22px;
     height: 22px;
     background-color: transparent;
     display: none;
+    top:14px;
+    right: 14px;
 }
 
 .navigation__close-btn::before {
@@ -84,8 +87,8 @@
     width: 22px;
     height: 22px;
     position: absolute;
-    top:-518px;
-    right:-183px;
+    top:0;
+    right:0;
 }
 
 @media screen and (min-width:400px) and (max-width:768px) {
@@ -117,22 +120,15 @@
         cursor: pointer;
     }
     .navigation__btn {
-        margin-top: 382px;
+        margin-top: 290px;
+        margin-bottom: 90px;
+
     }
     .navigation__is-active {
         display: flex;
     }
-    .navigation__close-btn::before {
-        top: -702px;
-        right: -209px;
-    }
 }
 
-@media screen and (min-width:425px) and (max-width:715px) {
-    .navigation__close-btn::before {
-        right: -137px;
-    }
-}
 
 
 @media screen and (max-width:399px) {
@@ -164,13 +160,10 @@
         cursor: pointer;
     }
     .navigation__btn {
-        margin-top: 382px;
+        margin-top: 300px;
+        margin-bottom: 70px;
     }
     .navigation__is-active {
         display: flex;
-    }
-    .navigation__close-btn::before {
-        top: -701px;
-        right: -137px;
     }
 }
