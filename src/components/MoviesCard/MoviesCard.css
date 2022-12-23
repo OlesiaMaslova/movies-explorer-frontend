@@ -70,6 +70,7 @@
     width: 72px;
     padding: 0;
     cursor: pointer;
+    color:#FFFF;
 }
 
 .moviesCard__btn::before {
