@@ -74,6 +74,11 @@
     opacity:0.8;
 }
 
+.access-form__button:disabled {
+    background: #75849d;
+    cursor: default;
+}
+
 .access-form__form-error {
     font-weight: 400;
     font-size: 10px;
@@ -92,7 +97,7 @@
     flex-direction: column;
 }
 
-.access-form__input:invalid + .access-form__error {
+.access-form__input:invalid + .access-form__form-error {
     display: block;
 }
 

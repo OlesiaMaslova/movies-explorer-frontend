@@ -17,10 +17,28 @@
     border-bottom: 1px solid #424242;
     max-width: 410px;
     margin: 0 auto;
+    margin-bottom: 20px;
     font-weight: 400;
     font-size: 11px;
     line-height: 13px;
+    position: relative;
+}
 
+.profile__error {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #EE3465;
+    text-align: left;
+    position: absolute;
+    top:40px;
+    left: 0;
+}
+
+.profile__field-value {
+    border: none;
+    background: transparent;
+    direction: rtl;
 }
 
 .profile__text-container:last-child {
@@ -39,11 +57,23 @@
     color: #FFFF;
 }
 
+.profile__btn:disabled {
+    background: #75849d;
+    cursor: default;
+}
+
 .profile__btn-exit {
     color: #EE3465;
     margin-top: 0;
     margin-bottom: 110px;
     cursor: pointer;
+}
+
+.profile__submit-success {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #005406;
 }
 
 @media screen and (min-width:320px) and (max-width:767px) {

@@ -6,12 +6,25 @@
     color: #FFFF;
 }
 
+.moviesCard_rendered:nth-child(n+13) {
+    display: none;
+}
+
+.moviesCard_rendered_is-visible {
+    display: block;
+}
+
+.moviesCard__link {
+    text-decoration: none;
+    color: inherit;
+}
 .moviesCard__pic {
     width: 100%;
-    max-height: 201px;
-    min-height: 168px;
+    /* max-height: 201px;
+    min-height: 168px; */
     border-radius: 6px;
     position: relative;
+    height: 201px;
 }
 
 .moviesCard__wrap {
@@ -97,7 +110,7 @@
     cursor: pointer;
 }
 
-.moviesCard::before {
+.moviesCard__btn-saved::before {
     content: " ";
     background-image: url(../../images/d3.svg);
     background-size: cover;
@@ -105,28 +118,31 @@
     width: 21px;
     height: 21px;
     position: absolute;
-    top:14px;
-    right: 14px;
-    z-index: 0;
+    top:0px;
+    right: 0px;
+    z-index: -1;
 }
 
-.moviesCard:hover::before {
+.moviesCard__btn-saved:hover::before {
     z-index: 2;
 }
 
- .moviesCard__btn-delete {
-    visibility:hidden;  
-}
 
 
 @media screen and (min-width:768px) and (max-width:1024px) {
-   .moviesCard:nth-child(n+9) {
+   .moviesCard_rendered:nth-child(n+9) {
     display: none;
+   }
+   .moviesCard__pic {
+    height: 190px;
    }
 }
 
 @media screen and (min-width:320px) and (max-width:767px) {
-    .moviesCard:nth-child(n+6) {
+    .moviesCard_rendered:nth-child(n+6) {
         display: none;
        }
+    .moviesCard__pic {
+        height: 168px;
+    }
 }
