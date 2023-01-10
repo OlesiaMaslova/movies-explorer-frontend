@@ -89,11 +89,9 @@ function App() {
   function onRegister(data) {
     return auth.register(data)
         .then((res) => {
-          console.log('apiregistr')
           setErrorDisplay(false);
           return auth.authorize(data)
           .then(({token}) => {
-            console.log('poluchili token y')
             localStorage.setItem('token', token);
             setTokenAuth(token);
             setIsLoggedIn(true);
@@ -144,9 +142,7 @@ function getTokenChecked() {
 }
 
 React.useEffect(() => {
-  console.log('zaprashivayut sohranennie movie')
   if(!isLoggedIn) {
-    console.log('NE ZAPROSHENO sohranennie movie')
 
     return
 }
@@ -155,10 +151,8 @@ React.useEffect(() => {
 },[isLoggedIn, saveSate]);
 
 React.useEffect(() => {
-  console.log('zaprashivayur userinfo')
 
   if(!isLoggedIn) {
-    console.log('user ne zaproshen')
       return
   }
   mainApi.getUserInfo()
@@ -171,7 +165,6 @@ React.useEffect(() => {
 }, [isLoggedIn])
 
 React.useEffect(() => {
-  console.log('proveryayut token')
   getTokenChecked();
 },[]);
 
