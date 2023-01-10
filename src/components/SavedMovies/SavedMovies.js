@@ -37,7 +37,7 @@ React.useEffect(() => {
     return (
         <section className="saved-movies">
         <Header onMainPage={false} component={Navigation} className='header'/>
-        <SearchForm onFormSubmit={handleSavedMovieSearch} onFilterState={handleFilterStateSet}/>
+        <SearchForm onFormSubmit={handleSavedMovieSearch} onFilterState={handleFilterStateSet} state={filterState}/>
         <MoviesCardList onDelete={props.onDelete} movies={filterState? savedShortMovies : savedMovies}/>
         <Footer/>
         </section> 

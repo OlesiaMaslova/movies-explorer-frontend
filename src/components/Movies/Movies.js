@@ -133,6 +133,8 @@ function Movies(props) {
         }
 
         setMoviesResults(moviesToRender);
+        const newState = localStorage.getItem('stateSubmited');
+        
         if (filterState) {
             const shortResults = filter.filterByDuration(results, filterState);
             setShortMovies(shortResults);

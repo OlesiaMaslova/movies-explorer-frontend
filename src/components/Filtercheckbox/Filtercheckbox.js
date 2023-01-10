@@ -8,9 +8,12 @@ function Filtercheckbox(props) {
 
     function handleFilterState(event) {
         props.onFilterState(!isChecked);
-        setIsChecked(!isChecked);
+        // setIsChecked(!isChecked);
     }
-    
+
+    React.useEffect(() => {
+        setIsChecked(props.state);
+    },[props.state])
 
     return (
         <div className="filtercheckbox">
