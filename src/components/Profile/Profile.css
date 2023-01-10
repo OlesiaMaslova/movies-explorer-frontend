@@ -38,7 +38,7 @@
 .profile__field-value {
     border: none;
     background: transparent;
-    direction: rtl;
+    text-align: right;
 }
 
 .profile__text-container:last-child {

@@ -32,7 +32,6 @@ function Movies(props) {
                 value = searchValue;
             }
             setSearchValue(value);
-            console.log(searchValue)
             const results = props.movies.map((item) => item);
             await results.map((i) => {
                 return props.userMovies.forEach((el) => {

@@ -6,9 +6,6 @@ function MoviesCard(props) {
 
     const [saveState, setSaveState] = React.useState(false);
   
-
-
-
         function handleClickSave() {
             props.onSave(props.movie)
             setSaveState(true);
@@ -20,6 +17,7 @@ function MoviesCard(props) {
         }
 
         React.useEffect(() => {
+       
             props.owner===props.user? setSaveState(true) : setSaveState(false);
 
                   

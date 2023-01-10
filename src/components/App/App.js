@@ -89,11 +89,13 @@ function App() {
   function onRegister(data) {
     return auth.register(data)
         .then((res) => {
+          console.log('apiregistr')
           setErrorDisplay(false);
           return auth.authorize(data)
           .then(({token}) => {
+            console.log('poluchili token y')
             localStorage.setItem('token', token);
-            setCurrentUser(data);
+            setTokenAuth(token);
             setIsLoggedIn(true);
           })
         })
@@ -108,9 +110,9 @@ function onLogin(data) {
   return auth.authorize(data)
         .then(({token}) => {
           localStorage.setItem('token', token);
-          setCurrentUser(data);
           setIsLoggedIn(true);
           setErrorDisplay(false);
+          setTokenAuth(token);
         })
         .catch((err) => {
           setServerError(err);
@@ -121,9 +123,9 @@ function onLogin(data) {
 function handleLogOut() {
   setIsLoggedIn(false);
   localStorage.clear();
+  setCurrentUser({});
   history.push('/');
 }
-
 function getTokenChecked() {
   const jwt = localStorage.getItem('token');
   setTokenAuth(jwt);
@@ -140,7 +142,36 @@ function getTokenChecked() {
       })
 
 }
+
 React.useEffect(() => {
+  console.log('zaprashivayut sohranennie movie')
+  if(!isLoggedIn) {
+    console.log('NE ZAPROSHENO sohranennie movie')
+
+    return
+}
+  getSavedMovies();
+  return () => setSaveState(false);
+},[isLoggedIn, saveSate]);
+
+React.useEffect(() => {
+  console.log('zaprashivayur userinfo')
+
+  if(!isLoggedIn) {
+    console.log('user ne zaproshen')
+      return
+  }
+  mainApi.getUserInfo()
+      .then((data) => {
+          setCurrentUser(data);
+      })
+      .catch((err) => {
+          console.log(`Ошибка: ${err}`);
+      })
+}, [isLoggedIn])
+
+React.useEffect(() => {
+  console.log('proveryayut token')
   getTokenChecked();
 },[]);
 
@@ -157,9 +188,7 @@ React.useEffect(() => {
 },[isLoggedIn, currentUser]);
 
 function getSavedMovies() {
-  if(!isLoggedIn) {
-    return
-}
+
     mainApi.getSavedMovies() 
     .then((res) => {
       setSavedMovies(res)
@@ -170,24 +199,7 @@ function getSavedMovies() {
  
 }
 
-React.useEffect(() => {
 
-  getSavedMovies();
-  return () => setSaveState(false);
-},[isLoggedIn, currentUser, saveSate]);
-
-React.useEffect(() => {
-  if(!isLoggedIn) {
-      return
-  }
-  mainApi.getUserInfo()
-      .then((data) => {
-          setCurrentUser(data);
-      })
-      .catch((err) => {
-          console.log(`Ошибка: ${err}`);
-      })
-}, [isLoggedIn])
 
 return (
     <div className="App">
