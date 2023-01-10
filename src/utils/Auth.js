@@ -1,4 +1,4 @@
-export const URL = 'http://api.omaslovadiploma.nomoredomains.club';
+export const URL = 'https://api.omaslovadiploma.nomoredomains.club';
 
 const checkResponse = (response) => {
     return response.ok? response.json() : Promise.reject(new Error(`Ошибка ${response.status}: ${response.statusText}`))

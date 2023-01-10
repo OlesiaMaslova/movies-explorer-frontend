@@ -20,7 +20,7 @@ import MoviesApi from "../../utils/MoviesApi";
 
 function App() {
   const [tokenAuth, setTokenAuth] = React.useState('');
-  const mainApi = new MainApi('http://api.omaslovadiploma.nomoredomains.club', {
+  const mainApi = new MainApi('https://api.omaslovadiploma.nomoredomains.club', {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${tokenAuth}`,
 });
