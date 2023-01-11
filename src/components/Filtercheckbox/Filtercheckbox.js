@@ -5,19 +5,14 @@ const [state, setState] = React.useState(false)
 
     function handleFilterState(event) {
         props.onFilterState(event.target.checked);
-        console.log(`в хэндлере чекбокса ${event.target.checked}`)
+        
     }
 
-
-    React.useEffect(() => {
-        setState(props.state);
-    }, [props.state])
-    console.log(`в чекбокс возвращается ${props.state}`)
 
     return (
         <div className="filtercheckbox">
             <label className="checkbox">
-                <input type="checkbox" onChange={handleFilterState} defaultChecked={state}/>
+                <input type="checkbox" onChange={handleFilterState} сhecked={props.state? 1 : 0}/>
                 <div className="checkbox__text"></div>
             </label>
             

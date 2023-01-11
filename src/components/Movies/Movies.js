@@ -21,7 +21,6 @@ function Movies(props) {
     const [moreBtnInvisible, setMoreBtnStyleInvisible] = React.useState({});
     const [isLoading, setIsLoading] = React.useState(false);
     const [messageDisplay, setMessageDisplay] = React.useState(false);
-    const [isChecked, setIsChecked] = React.useState(false);
 
     const currentUserInfo = React.useContext(CurrentUserContext);
 
@@ -43,7 +42,7 @@ function Movies(props) {
                 })
             })
 
-            console.log(`в момент сабмита стейт ${filterState}`)
+           
             const finalResults = await filter.getFilterResults(results, value, filterState);
             if (finalResults.length === 0) {
                 setMessageDisplay(true);
@@ -68,7 +67,6 @@ function Movies(props) {
     }
 
     function settleFilterState(state) {
-        console.log(`пришло из хэндлера в Movies ${state}`)
         setFilterState(state);
     }
 
@@ -138,12 +136,11 @@ function Movies(props) {
         } else {
             setMoreBtnStyleInvisible({});
         }
-        const checkValue= localStorage.getItem('state');
-        const checkValueBool =  !!JSON.parse(String(checkValue).toLowerCase());
-        console.log(checkValueBool)
+       
+        
 
     }, [count, currentUserInfo._id, props.userMovies, searchValue, totalMovies, filterState, shortMovies.length]);
-    console.log(`в пропс попадает ${filterState}`)
+   
 
     React.useEffect(() => {
 
