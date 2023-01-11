@@ -1,24 +1,23 @@
 import React from "react";
 import './Filtercheckbox.css'
 function Filtercheckbox(props) {
-
-    const [isChecked, setIsChecked] = React.useState(false);
-    
-    
+const [state, setState] = React.useState(false)
 
     function handleFilterState(event) {
-        props.onFilterState(!isChecked);
-        // setIsChecked(!isChecked);
+        props.onFilterState(event.target.checked);
+        console.log(`в хэндлере чекбокса ${event.target.checked}`)
     }
 
+
     React.useEffect(() => {
-        setIsChecked(props.state);
-    },[props.state])
+        setState(props.state);
+    }, [props.state])
+    console.log(`в чекбокс возвращается ${props.state}`)
 
     return (
         <div className="filtercheckbox">
             <label className="checkbox">
-                <input type="checkbox" onChange={handleFilterState} checked={isChecked} />
+                <input type="checkbox" onChange={handleFilterState} defaultChecked={state}/>
                 <div className="checkbox__text"></div>
             </label>
             

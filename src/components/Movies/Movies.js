@@ -21,6 +21,7 @@ function Movies(props) {
     const [moreBtnInvisible, setMoreBtnStyleInvisible] = React.useState({});
     const [isLoading, setIsLoading] = React.useState(false);
     const [messageDisplay, setMessageDisplay] = React.useState(false);
+    const [isChecked, setIsChecked] = React.useState(false);
 
     const currentUserInfo = React.useContext(CurrentUserContext);
 
@@ -42,7 +43,7 @@ function Movies(props) {
                 })
             })
 
-
+            console.log(`в момент сабмита стейт ${filterState}`)
             const finalResults = await filter.getFilterResults(results, value, filterState);
             if (finalResults.length === 0) {
                 setMessageDisplay(true);
@@ -54,8 +55,7 @@ function Movies(props) {
             setMoviesResults(finalResultsToRender);
             localStorage.setItem('moviesResults', JSON.stringify(finalResults));
             localStorage.setItem('searchValue', value);
-            const state = localStorage.getItem('state');
-            localStorage.setItem('stateSubmited', state);
+            localStorage.setItem('state', filterState);
         }
         catch (err) {
             console.log(err)
@@ -68,9 +68,8 @@ function Movies(props) {
     }
 
     function settleFilterState(state) {
+        console.log(`пришло из хэндлера в Movies ${state}`)
         setFilterState(state);
-
-        localStorage.setItem('state', state);
     }
 
 
@@ -126,22 +125,25 @@ function Movies(props) {
         });
 
         const moviesToRender = filter.render(results, count);
-        if (moviesToRender.length === totalMovies) {
+
+        setMoviesResults(moviesToRender);
+        if (filterState) {
+            const shortResults = filter.filterByDuration(results, filterState);
+            const shortMoviesToRender = filter.render(shortResults, count);
+            setShortMovies(shortMoviesToRender);   
+        }
+    
+        if (moviesToRender.length === totalMovies || shortMovies.length ===totalMovies) {
             setMoreBtnStyleInvisible({ display: 'none' });
         } else {
             setMoreBtnStyleInvisible({});
         }
+        const checkValue= localStorage.getItem('state');
+        const checkValueBool =  !!JSON.parse(String(checkValue).toLowerCase());
+        console.log(checkValueBool)
 
-        setMoviesResults(moviesToRender);
-        const newState = localStorage.getItem('stateSubmited');
-        
-        if (filterState) {
-            const shortResults = filter.filterByDuration(results, filterState);
-            setShortMovies(shortResults);
-        }
-
-    }, [count, currentUserInfo._id, props.userMovies, searchValue, totalMovies, filterState]);
-
+    }, [count, currentUserInfo._id, props.userMovies, searchValue, totalMovies, filterState, shortMovies.length]);
+    console.log(`в пропс попадает ${filterState}`)
 
     React.useEffect(() => {
 
@@ -160,13 +162,12 @@ function Movies(props) {
         }
     }, [moviesResults.length]);
 
-
     return (
         <section className="movies">
             <Header onMainPage={false} component={Navigation} className='header' />
             <SearchForm onFormSubmit={onMoviesSubmit} valueState={searchValue} onFilterState={settleFilterState} state={filterState} />
             {
-                isLoading ? <Preloader /> : <MoviesCardList movies={filterState ? shortMovies : moviesResults} onSave={props.onSave} onDelete={props.onDelete} />
+                isLoading ? <Preloader /> : <MoviesCardList movies={filterState ? shortMovies : moviesResults} onSave={props.onSave} onDelete={props.onDelete}  />
             }
             {
                 messageDisplay ? <span className="movies__message">{props.searchMessage}</span> : ''

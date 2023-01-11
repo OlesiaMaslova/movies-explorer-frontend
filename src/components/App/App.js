@@ -108,6 +108,7 @@ function onLogin(data) {
   return auth.authorize(data)
         .then(({token}) => {
           localStorage.setItem('token', token);
+          setTokenAuth(token);
           setIsLoggedIn(true);
           setErrorDisplay(false);
           setTokenAuth(token);
