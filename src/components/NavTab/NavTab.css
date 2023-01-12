@@ -4,6 +4,10 @@
     justify-content: space-between;
 }
 
+.navTab_invisible {
+    display: none;
+}
+
 .navTab__link {
     text-decoration: none;
     display: flex;

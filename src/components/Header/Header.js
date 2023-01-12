@@ -1,10 +1,13 @@
 import React from "react";
 import NavTab from "../NavTab/NavTab";
 import './Header.css';
+import { Link } from "react-router-dom";
+
 function Header({component:Component, ...props}) {
 
     const [isMenuActive, setisMenuActive] = React.useState(false);
-
+    
+    
     function handleMenuClick() {
         setisMenuActive(true);
     }
@@ -15,11 +18,11 @@ function Header({component:Component, ...props}) {
 
     return (
         <header className={props.className}>
-            <a href="http://localhost:3000/"><div className='header__logo'></div></a>
+            <Link to='/'><div className='header__logo'></div></Link>
             {
-                props.onMainPage? <NavTab /> : <Component isMenuActive={isMenuActive} onClose={handleMenuClose}/>
+                props.isLoggedIn? <Component isMenuActive={isMenuActive} onClose={handleMenuClose}/>: <NavTab />
             }
-            <button className={`header__menu-btn ${props.onMainPage? 'header__menu-btn_state_invisible':''}`} onClick={handleMenuClick}></button>
+            <button className={`header__menu-btn ${!props.isLoggedIn? 'header__menu-btn_state_invisible':''}`} onClick={handleMenuClick}></button>
         </header>
     );
 }
