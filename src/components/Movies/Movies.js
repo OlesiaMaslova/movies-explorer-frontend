@@ -8,16 +8,16 @@ import Navigation from "../Navigation/Navigation";
 import Preloader from "../Preloader/Preloader";
 import * as filter from "../../utils/MovieFilter";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-
+import { LARGESIZEDSCREEN, MEDIUMSIZEDSCREEN, STEPFORLARGESCREEN, STEPFORMEDIUMSCREEN, MOVIESTODISPLAYLARGESCREEN, MOVIESTODISPLAYMEDIUMSCREEN, MOVIESTODISPLAYSMALLSCREEN } from "../../utils/config";
 
 function Movies(props) {
     const [moviesResults, setMoviesResults] = React.useState([]);
     const [shortMovies, setShortMovies] = React.useState([]);
     const [searchValue, setSearchValue] = React.useState('');
-    const [filterState, setFilterState] = React.useState(false);
     const [count, setCount] = React.useState(0);
     const [step, setStep] = React.useState(0);
     const [totalMovies, setTotalMovies] = React.useState(0);
+    const [totalShortMovies, setTotalShortMovies] = React.useState(0);
     const [moreBtnInvisible, setMoreBtnStyleInvisible] = React.useState({});
     const [isLoading, setIsLoading] = React.useState(false);
     const [messageDisplay, setMessageDisplay] = React.useState(false);
@@ -38,23 +38,28 @@ function Movies(props) {
                     if (el.movieId === i.id) {
                         i.owner = currentUserInfo._id;
                         i._id = el._id;
+                        i.x = true;
                     }
                 })
             })
 
            
-            const finalResults = await filter.getFilterResults(results, value, filterState);
+            const finalResults = await filter.getFilterResults(results, value, props.state);
             if (finalResults.length === 0) {
                 setMessageDisplay(true);
             }
-            setTotalMovies(finalResults.length);
             const finalResultsToRender = await filter.render(finalResults, count);
 
-
             setMoviesResults(finalResultsToRender);
+
+            if (moviesResults.length !== finalResults.length) {
+                setMoreBtnStyleInvisible({});
+            } else {
+                setMoreBtnStyleInvisible({ display: 'none' });
+            }
+
             localStorage.setItem('moviesResults', JSON.stringify(finalResults));
             localStorage.setItem('searchValue', value);
-            localStorage.setItem('state', filterState);
         }
         catch (err) {
             console.log(err)
@@ -66,20 +71,15 @@ function Movies(props) {
         }, 1000);
     }
 
-    function settleFilterState(state) {
-        setFilterState(state);
-    }
-
-
     function handleMoreBtnClick() {
-        if (window.innerWidth >= 1280) {
-            setStep(3);
+        if (window.innerWidth >= LARGESIZEDSCREEN) {
+            setStep(STEPFORLARGESCREEN);
             setCount(count + step);
-        } else if (window.innerWidth < 1280 && window.innerWidth > 767) {
-            setStep(2);
+        } else if (window.innerWidth < LARGESIZEDSCREEN && window.innerWidth > MEDIUMSIZEDSCREEN) {
+            setStep(STEPFORMEDIUMSCREEN);
             setCount(count + step);
         } else {
-            setStep(2)
+            setStep(STEPFORMEDIUMSCREEN)
             setCount(count + step);
         }
         const moviesToRender = filter.render(moviesResults, count);
@@ -96,15 +96,15 @@ function Movies(props) {
 
 
     function setInitialCounter() {
-        if (window.innerWidth >= 1280) {
-            setStep(3)
-            setCount(12);
-        } else if (window.innerWidth < 1280 && window.innerWidth > 767) {
-            setStep(2);
-            setCount(8);
+        if (window.innerWidth >= LARGESIZEDSCREEN) {
+            setStep(STEPFORLARGESCREEN)
+            setCount(MOVIESTODISPLAYLARGESCREEN);
+        } else if (window.innerWidth < LARGESIZEDSCREEN && window.innerWidth > MEDIUMSIZEDSCREEN) {
+            setStep(STEPFORMEDIUMSCREEN);
+            setCount(MOVIESTODISPLAYMEDIUMSCREEN);
         } else {
-            setStep(2);
-            setCount(5);
+            setStep(STEPFORMEDIUMSCREEN);
+            setCount(MOVIESTODISPLAYSMALLSCREEN);
         }
     }
 
@@ -118,20 +118,28 @@ function Movies(props) {
                 if (el.movieId === i.id) {
                     i.owner = currentUserInfo._id
                     i._id = el._id;
+                    i.x = true;
+
                 }
             })
         });
-
+        setTotalMovies(results.length);
         const moviesToRender = filter.render(results, count);
-
         setMoviesResults(moviesToRender);
-        if (filterState) {
-            const shortResults = filter.filterByDuration(results, filterState);
+        if (props.state) {
+            const shortResults = filter.filterByDuration(results, props.state);
             const shortMoviesToRender = filter.render(shortResults, count);
-            setShortMovies(shortMoviesToRender);   
+            setShortMovies(shortMoviesToRender);
+            setTotalShortMovies(shortResults.length);   
         }
-    
-        if (moviesToRender.length === totalMovies || shortMovies.length ===totalMovies) {
+      
+        if (shortMovies.length  === totalShortMovies) {
+            setMoreBtnStyleInvisible({ display: 'none' });
+        } else {
+            setMoreBtnStyleInvisible({});
+        }
+
+        if (moviesToRender.length === totalMovies) {
             setMoreBtnStyleInvisible({ display: 'none' });
         } else {
             setMoreBtnStyleInvisible({});
@@ -139,7 +147,7 @@ function Movies(props) {
        
         
 
-    }, [count, currentUserInfo._id, props.userMovies, searchValue, totalMovies, filterState, shortMovies.length]);
+    }, [count, currentUserInfo._id, props.userMovies, searchValue, totalMovies, props.state, shortMovies.length, totalShortMovies]);
    
 
     React.useEffect(() => {
@@ -151,20 +159,19 @@ function Movies(props) {
     }, [])
 
     React.useEffect(() => {
-        if (moviesResults.length !== 0) {
-            setMessageDisplay(false);
-            setMoreBtnStyleInvisible({});
-        } else {
+        if (moviesResults.length === 0) {
             setMoreBtnStyleInvisible({ display: 'none' });
+        } else {
+            setMessageDisplay(false);
         }
     }, [moviesResults.length]);
-
+    
     return (
         <section className="movies">
-            <Header onMainPage={false} component={Navigation} className='header' />
-            <SearchForm onFormSubmit={onMoviesSubmit} valueState={searchValue} onFilterState={settleFilterState} state={filterState} />
+            <Header onMainPage={false} component={Navigation} className='header' isLoggedIn={props.isLoggedIn}/>
+            <SearchForm onFormSubmit={onMoviesSubmit} valueState={searchValue} onFilterState={props.onFilterState} state={props.state} />
             {
-                isLoading ? <Preloader /> : <MoviesCardList movies={filterState ? shortMovies : moviesResults} onSave={props.onSave} onDelete={props.onDelete}  />
+                isLoading ? <Preloader /> : <MoviesCardList movies={props.state ? shortMovies : moviesResults} onSave={props.onSave} onDelete={props.onDelete}  />
             }
             {
                 messageDisplay ? <span className="movies__message">{props.searchMessage}</span> : ''

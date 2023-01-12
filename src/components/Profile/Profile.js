@@ -10,15 +10,26 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 function Profile(props) {
     const currentUserInfo = React.useContext(CurrentUserContext);
 
-    const {values, handleChange, errors, isValid, setIsValid, resetForm} = useFormAndValidation();
+    const {handleChange, errors, isValid, setIsValid, resetForm} = useFormAndValidation();
     const [userMessage, setUserMessage] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [name, setName] = React.useState('');
     
    
+    function handleNameChange(event) {
+        handleChange(event);
+        setName(event.target.value);
+    }
+
+    function handleEmailChange(event) {
+        handleChange(event);
+        setEmail(event.target.value);
+    }
+
     function handleSubmitForm(event) {
         event.preventDefault();
-
-        if(values.name !== currentUserInfo.name && values.email!== currentUserInfo.email) {
-            props.onSubmit(values);
+        if(name !== currentUserInfo.name || email!== currentUserInfo.email )  {
+            props.onSubmit({name:name, email:email});
             resetForm();
             setUserMessage('');
         } else {
@@ -32,19 +43,24 @@ function Profile(props) {
         props.onLogout();
     }
 
+    React.useEffect(() => {
+        setName(currentUserInfo.name);
+        setEmail(currentUserInfo.email);
+    }, [currentUserInfo])
+
     return ( 
 <section className="profile">
-            <Header onMainPage={false} component={Navigation} className='header'/>
+            <Header onMainPage={false} component={Navigation} className='header'  isLoggedIn={props.isLoggedIn}/>
             <p className="profile__title">Привет, {currentUserInfo.name}!</p>
             <form className="profile__form" onSubmit={handleSubmitForm}>
             <div className="profile__text-container">
                 <p className="profile__field-tag">Имя</p>
-                <input className="profile__field-value" type="text" name="name" minLength="2" maxLength="30" pattern="^[A-Za-zА-Яа-яЁё\s]+$" required placeholder={currentUserInfo.name} onChange={handleChange}/>
+                <input className="profile__field-value" type="text" name="name" minLength="2" maxLength="30" pattern="^[A-Za-zА-Яа-яЁё\s]+$" value={name || ''} onChange={handleNameChange}/>
                 <span className="profile__error">{errors.name}</span>    
             </div>
             <div className="profile__text-container">
                 <p className="profile__field-tag">E-mail</p>
-                <input className="profile__field-value" type="email" name="email" placeholder={currentUserInfo.email} onChange={handleChange}/>
+                <input className="profile__field-value" type="email" name="email" value={email || ''} onChange={handleEmailChange}/>
                 <span className="profile__error">{errors.email}</span>    
             </div>
             {

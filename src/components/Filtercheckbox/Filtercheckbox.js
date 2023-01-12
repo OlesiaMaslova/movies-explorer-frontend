@@ -1,18 +1,17 @@
 import React from "react";
-import './Filtercheckbox.css'
+import './Filtercheckbox.css';
+
 function Filtercheckbox(props) {
-const [state, setState] = React.useState(false)
 
     function handleFilterState(event) {
         props.onFilterState(event.target.checked);
         
     }
 
-
     return (
         <div className="filtercheckbox">
             <label className="checkbox">
-                <input type="checkbox" onChange={handleFilterState} сhecked={props.state? 1 : 0}/>
+                <input type="checkbox" onChange={handleFilterState} checked={props.state}/>
                 <div className="checkbox__text"></div>
             </label>
             

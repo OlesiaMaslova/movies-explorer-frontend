@@ -26,6 +26,7 @@ function MoviesCardList(props) {
                             user={currentUserInfo._id}
                             visible={props.state}
                             trailerLink={movie.trailerLink}
+                            x={movie.x}
                             />
                         )
                     })}

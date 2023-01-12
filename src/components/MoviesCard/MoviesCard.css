@@ -90,7 +90,7 @@
     content: "Сохранить";}
 
 
-.moviesCard__btn-saved {
+.moviesCard__btntosave {
     position: absolute;
     top: 14px;
     right: 14px;
@@ -110,22 +110,26 @@
     cursor: pointer;
 }
 
-.moviesCard__btn-saved::before {
-    content: " ";
+.moviesCard__btn-saved {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 10px;
+    line-height: 0.9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     background-image: url(../../images/d3.svg);
     background-size: cover;
     border-radius: 50px;
-    width: 21px;
+    border: none;
     height: 21px;
-    position: absolute;
-    top:0px;
-    right: 0px;
-    z-index: -1;
+    width: 21px;
+    padding: 0;
+    cursor: pointer;
 }
 
-.moviesCard__btn-saved:hover::before {
-    z-index: 2;
-}
 
 
 

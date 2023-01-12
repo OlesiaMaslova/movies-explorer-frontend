@@ -7,29 +7,33 @@ import { useFormAndValidation } from "../../utils/FormValidation";
 
 function Login(props) {
 
-    const {values, handleChange, errors, isValid, resetForm} = useFormAndValidation();
+    const {values, handleChange, errors, isValid} = useFormAndValidation();
 
    
     function handleSumbit(event) {
         event.preventDefault();
         props.onLogin(values); 
-        resetForm();
     }
 
+    React.useEffect(() => {
+        if(props.isLoggedIn) {
+           props.history.push('/movies');
+        }
+     }, [props.history, props.isLoggedIn])
 
     return (
         <div className="access-form">
-            <div className='access-form__logo'></div>
+            <Link to='/'><div className='access-form__logo'></div></Link>
             <p className="access-form__title">Рады видеть!</p>
             <form className="access-form__form" onSubmit={handleSumbit}>
             <div className="access-form__wrap">
                 <label className="access-form__label" htmlFor='email'>E-mail</label>
-                <input className="access-form__input" id="email" type="email" name="email" required onChange={handleChange} />
+                <input className="access-form__input" id="email" type="email" name="email" value={values.email || ''} pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required onChange={handleChange} />
                 <span className="access-form__form-error">{errors.email}</span>    
                 </div>
                 <div className="access-form__wrap">  
                 <label className="access-form__label" htmlFor='password'>Пароль</label>
-                <input className="access-form__input" id="password" type="password" name="password" required onChange={handleChange}/>
+                <input className="access-form__input" id="password" type="password" name="password" value={values.password || ''} required onChange={handleChange}/>
                 <span className="access-form__form-error">{errors.password}</span>     
                 </div>
                 { props.errorDisplay? <ErrorMessage error={props.serverError }/> : '' }

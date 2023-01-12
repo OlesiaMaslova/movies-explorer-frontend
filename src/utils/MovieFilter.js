@@ -1,6 +1,6 @@
 export function getFilterResults(array, value, filterState) {
     let someMovies = array.filter(item => item.nameRU.toLowerCase().includes(value.toLowerCase()) || item.nameEN.toLowerCase().includes(value.toLowerCase()));
-    
+
     if(filterState) {
         let someShortMovies = someMovies.filter(item => item.duration<40);
         return someShortMovies;

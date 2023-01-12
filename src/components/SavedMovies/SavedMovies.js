@@ -12,33 +12,32 @@ function SavedMovies(props) {
     const [savedMovies, setSavedMovies] = React.useState([]);
     const [savedShortMovies, setSavedShortMovies] = React.useState([]);
     const [filterState, setFilterState] = React.useState(false);
+
     
     function handleFilterStateSet(state) {
         setFilterState(state)
     }
 
-    function handleSavedMovieSearch(value) {
-        if (!value) {
-            value = '';
-        }
-       const results = filter.getFilterResults(props.movies, value, filterState);
-            setSavedMovies(results)
-
+    async function handleSavedMovieSearch(value) {
+        const results = props.movies.map((item) => item);
+        const savedResults = await filter.getFilterResults(results, value, filterState);
+            setSavedMovies(savedResults);
     }
 
 React.useEffect(() => {
   setSavedMovies(props.movies);
   if(filterState) {
-    const shortMovies = filter.filterByDuration(savedMovies, filterState);
+    const shortMovies = filter.filterByDuration(props.movies, filterState);
     setSavedShortMovies(shortMovies)
+
   }  
-}, [props.movies, filterState, savedMovies])
+}, [props.movies, filterState])
 
     return (
         <section className="saved-movies">
-        <Header onMainPage={false} component={Navigation} className='header'/>
+        <Header onMainPage={false} component={Navigation} className='header' isLoggedIn={props.isLoggedIn}/>
         <SearchForm onFormSubmit={handleSavedMovieSearch} onFilterState={handleFilterStateSet} state={filterState}/>
-        <MoviesCardList onDelete={props.onDelete} movies={filterState? savedShortMovies : savedMovies}/>
+        <MoviesCardList onDelete={props.onDelete} movies={filterState? savedShortMovies : savedMovies} />
         <Footer/>
         </section> 
     );

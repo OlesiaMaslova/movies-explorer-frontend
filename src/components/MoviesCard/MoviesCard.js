@@ -19,10 +19,8 @@ function MoviesCard(props) {
         React.useEffect(() => {
        
             props.owner===props.user? setSaveState(true) : setSaveState(false);
-
                   
         },[props.moviesName, props.owner, props.user, props.visible, saveState])
-
     return (   
         <li className={`moviesCard ${!true? 'moviesCard_rendered':'moviesCard_rendered_is-visible'}`}>
             <a className="moviesCard__link" href={props.trailerLink} target='blank'>
@@ -36,9 +34,9 @@ function MoviesCard(props) {
             </a>
 
             {
-                saveState? <button className="moviesCard__btn-saved" onClick={handleClickDelete}></button> : <button className="moviesCard__btn" onClick={handleClickSave}></button>
+                saveState? <button className={!props.x? "moviesCard__btn-saved": "moviesCard__btntosave"} onClick={handleClickDelete}></button> : <button className='moviesCard__btn' onClick={handleClickSave}></button>
             }
-            
+
             </li>
     );
 }

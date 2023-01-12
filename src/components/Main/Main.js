@@ -8,10 +8,10 @@ import Techs from "../Techs/Techs";
 import Portfolio from "../Portfolio/Portfolio";
 import Footer from "../Footer/Footer";
 
-function Main() {
+function Main(props) {
     return (
         <main className='main'>
-            <Header onMainPage={true} component={Navigation} className='headerMain' />
+            <Header isLoggedIn={props.isLoggedIn} component={Navigation} className='headerMain' />
             <Promo />
             <AboutProject />
             <Techs />

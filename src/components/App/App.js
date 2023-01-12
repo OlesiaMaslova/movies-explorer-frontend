@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Switch, Route, Redirect, useHistory} from 'react-router-dom';
+import { Switch, Route, useHistory} from 'react-router-dom';
 import '../../vendor/normalize.css';
 import './App.css';
 import '../../index.css';
@@ -36,6 +36,13 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [saveSate, setSaveState] = React.useState(false);
   const [searchMessage, setSearchMessage] = React.useState('Ничего не найдено');
+  
+  
+  const [filterState, setFilterState] = React.useState(false);
+  function handleFilterState(state) {
+    setFilterState(state);
+  }
+  
  
   function getInitialMovies() {
     return moviesApi.getMovies()
@@ -141,10 +148,8 @@ function getTokenChecked() {
       })
 
 }
-
 React.useEffect(() => {
   if(!isLoggedIn) {
-
     return
 }
   getSavedMovies();
@@ -152,7 +157,6 @@ React.useEffect(() => {
 },[isLoggedIn, saveSate]);
 
 React.useEffect(() => {
-
   if(!isLoggedIn) {
       return
   }
@@ -169,11 +173,6 @@ React.useEffect(() => {
   getTokenChecked();
 },[]);
 
-React.useEffect(() => {
-  if(isLoggedIn) {
-    history.push('/movies');
-  }
-}, [isLoggedIn, history]);
 
 React.useEffect(() => {
   if(isLoggedIn) {
@@ -193,15 +192,13 @@ function getSavedMovies() {
  
 }
 
-
-
 return (
     <div className="App">
       <CurrentUserContext.Provider value={currentUser}>
       <Switch>
 
       <ProtectedRoute 
-      exact path="/movies"
+      path="/movies"
       isLoggedIn={isLoggedIn}
       component={Movies}
       onSave={handleSaveMovie}
@@ -209,9 +206,11 @@ return (
       userMovies={savedMovies}
       onDelete={handleDeleteMovie}
       searchMessage={searchMessage}
+      onFilterState={handleFilterState}
+      state={filterState}
         />
       <ProtectedRoute 
-      exact path="/saved-movies"
+      path="/saved-movies"
       isLoggedIn={isLoggedIn}
       component={SavedMovies}
       movies={savedMovies}
@@ -219,7 +218,7 @@ return (
       />
    
    <ProtectedRoute 
-      exact path="/profile"
+      path="/profile"
       isLoggedIn={isLoggedIn}
       component={Profile}
       onSubmit={handleUpdateUserInfo}
@@ -228,23 +227,19 @@ return (
       submitSuccess={submitSuccess}
       onLogout={handleLogOut}
       />
-
-  
+       
       <Route path="/signin">
-        <Login onLogin={onLogin} serverError={serverError} errorDisplay={errorDisplay} />
+        <Login onLogin={onLogin} serverError={serverError} errorDisplay={errorDisplay} isLoggedIn={isLoggedIn} history={history}/>
       </Route>
       <Route path="/signup">
-        <Register onRegister={onRegister} serverError={serverError} errorDisplay={errorDisplay}/>
+        <Register onRegister={onRegister} serverError={serverError} errorDisplay={errorDisplay} isLoggedIn={isLoggedIn} history={history}/>
       </Route>
       <Route exact path="/">
-        <Main />
+        <Main isLoggedIn={isLoggedIn}/>
       </Route>
       <Route path="*">
       <NotFoundPage />
       </Route>
-      <Route>
-        {isLoggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
-        </Route>
       </Switch>
       </CurrentUserContext.Provider>
     </div>
