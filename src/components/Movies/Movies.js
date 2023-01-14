@@ -21,7 +21,7 @@ function Movies(props) {
     const [moreBtnInvisible, setMoreBtnStyleInvisible] = React.useState({});
     const [isLoading, setIsLoading] = React.useState(false);
     const [messageDisplay, setMessageDisplay] = React.useState(false);
-
+    const [shortMovieslength, setShortMovieslength] = React.useState(0);
     const currentUserInfo = React.useContext(CurrentUserContext);
 
 
@@ -32,6 +32,7 @@ function Movies(props) {
                 value = searchValue;
             }
             setSearchValue(value);
+            
             const results = props.movies.map((item) => item);
             await results.map((i) => {
                 return props.userMovies.forEach((el) => {
@@ -52,12 +53,14 @@ function Movies(props) {
 
             setMoviesResults(finalResultsToRender);
 
-            if (moviesResults.length !== finalResults.length) {
-                setMoreBtnStyleInvisible({});
+            if (finalResultsToRender.length === finalResults.length) {
+                  setMoreBtnStyleInvisible({ display: 'none' })
             } else {
-                setMoreBtnStyleInvisible({ display: 'none' });
+                setMoreBtnStyleInvisible({});
             }
 
+
+            localStorage.setItem('state', props.state);
             localStorage.setItem('moviesResults', JSON.stringify(finalResults));
             localStorage.setItem('searchValue', value);
         }
@@ -84,11 +87,11 @@ function Movies(props) {
         }
         const moviesToRender = filter.render(moviesResults, count);
 
-        if (moviesToRender.length === totalMovies) {
-            setMoreBtnStyleInvisible({ display: 'none' });
-        } else {
-            setMoreBtnStyleInvisible({});
-        }
+        // if (moviesToRender.length === totalMovies) {
+        //     setMoreBtnStyleInvisible({ display: 'none' });
+        // } else {
+        //     setMoreBtnStyleInvisible({});
+        // }
 
         setMoviesResults(moviesToRender)
 
@@ -110,6 +113,7 @@ function Movies(props) {
 
     React.useEffect(() => {
         const value = localStorage.getItem('searchValue');
+        
         setSearchValue(value);
         const results = JSON.parse(localStorage.getItem('moviesResults')) || [];
 
@@ -130,26 +134,24 @@ function Movies(props) {
             const shortResults = filter.filterByDuration(results, props.state);
             const shortMoviesToRender = filter.render(shortResults, count);
             setShortMovies(shortMoviesToRender);
-            setTotalShortMovies(shortResults.length);   
-        }
-      
-        if (shortMovies.length  === totalShortMovies) {
-            setMoreBtnStyleInvisible({ display: 'none' });
+            setShortMovieslength(shortMoviesToRender.length)
+            setTotalShortMovies(shortResults.length);      
+            if (shortMovieslength  === totalShortMovies) {
+                setMoreBtnStyleInvisible({display: 'none'});
+            } else {
+                setMoreBtnStyleInvisible({});
+            }
         } else {
-            setMoreBtnStyleInvisible({});
+            if (moviesToRender.length === totalMovies) {
+                   setMoreBtnStyleInvisible({ display: 'none' });
+               } else {
+                   setMoreBtnStyleInvisible({});
+               }
         }
 
-        if (moviesToRender.length === totalMovies) {
-            setMoreBtnStyleInvisible({ display: 'none' });
-        } else {
-            setMoreBtnStyleInvisible({});
-        }
-       
-        
 
-    }, [count, currentUserInfo._id, props.userMovies, searchValue, totalMovies, props.state, shortMovies.length, totalShortMovies]);
+    }, [count, currentUserInfo._id, props.userMovies, searchValue, totalMovies, props.state, shortMovies.length, totalShortMovies, shortMovieslength]);
    
-
     React.useEffect(() => {
 
         setTimeout(setInitialCounter, 1000);
@@ -160,7 +162,7 @@ function Movies(props) {
 
     React.useEffect(() => {
         if (moviesResults.length === 0) {
-            setMoreBtnStyleInvisible({ display: 'none' });
+            // setMoreBtnStyleInvisible({ display: 'none' });
         } else {
             setMessageDisplay(false);
         }

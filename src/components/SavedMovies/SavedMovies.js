@@ -12,6 +12,7 @@ function SavedMovies(props) {
     const [savedMovies, setSavedMovies] = React.useState([]);
     const [savedShortMovies, setSavedShortMovies] = React.useState([]);
     const [filterState, setFilterState] = React.useState(false);
+    const [searhValue, setSearhValue]=React.useState('');
 
     
     function handleFilterStateSet(state) {
@@ -19,19 +20,21 @@ function SavedMovies(props) {
     }
 
     async function handleSavedMovieSearch(value) {
+        setSearhValue(value);
         const results = props.movies.map((item) => item);
         const savedResults = await filter.getFilterResults(results, value, filterState);
             setSavedMovies(savedResults);
     }
 
 React.useEffect(() => {
-  setSavedMovies(props.movies);
-  if(filterState) {
-    const shortMovies = filter.filterByDuration(props.movies, filterState);
-    setSavedShortMovies(shortMovies)
+    setSavedMovies(props.movies);
+    if(filterState) {
+      const shortMovies = filter.getFilterResults(props.movies, searhValue, filterState);
+      setSavedShortMovies(shortMovies)
+  
+    }  
+  }, [props.movies, filterState, searhValue])
 
-  }  
-}, [props.movies, filterState])
 
     return (
         <section className="saved-movies">

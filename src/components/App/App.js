@@ -36,13 +36,17 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [saveSate, setSaveState] = React.useState(false);
   const [searchMessage, setSearchMessage] = React.useState('Ничего не найдено');
-  
-  
   const [filterState, setFilterState] = React.useState(false);
+
   function handleFilterState(state) {
     setFilterState(state);
+    localStorage.setItem('state', state);
   }
   
+  React.useEffect(() => {
+    const state= JSON.parse(localStorage.getItem('state'));
+    setFilterState(state)
+  }, [filterState])
  
   function getInitialMovies() {
     return moviesApi.getMovies()
@@ -178,7 +182,7 @@ React.useEffect(() => {
   if(isLoggedIn) {
     getInitialMovies();
   }
-},[isLoggedIn, currentUser]);
+},[isLoggedIn]);
 
 function getSavedMovies() {
 
